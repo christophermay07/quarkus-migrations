@@ -17,20 +17,13 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.jboss.eap.quickstarts</groupId>
-        <artifactId>quickstart-parent</artifactId>
-        <!--
-        Maintain separation between the artifact id and the version to help prevent
-        merge conflicts between commits changing the GA and those changing the V.
-        -->
-        <version>7.4.0.GA</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
-    <artifactId>ejb-remote</artifactId>
+
+    <groupId>org.jboss.eap.quickstarts</groupId>
+    <artifactId>ejb-remote-to-resteasy</artifactId>
+    <version>quarkus</version>
     <packaging>pom</packaging>
-    <name>Quickstart: ejb-remote</name>
-    <description>This project demonstrates how to access an EJB from a remote client</description>
+    <name>Quickstart: ejb-remote-to-resteasy</name>
+    <description>This project demonstrates how to migrate from remote EJBs to RESTEasy (both client and server)</description>
 
     <licenses>
         <license>
@@ -39,6 +32,27 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <properties>
+        <maven.compiler.release>11</maven.compiler.release>
+        <quarkus.platform.version>3.6.6</quarkus.platform.version>
+        <compiler-plugin.version>3.11.0</compiler-plugin.version>
+        <surefire-plugin.version>3.1.2</surefire-plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.quarkus.platform</groupId>
+                <artifactId>quarkus-bom</artifactId>
+                <version>${quarkus.platform.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <!-- This quickstart consists of a server side component and a client that accesses
      the server side component. Each component has its own self contain pom. However,

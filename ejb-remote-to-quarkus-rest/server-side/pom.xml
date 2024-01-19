@@ -19,14 +19,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.jboss.eap.quickstarts</groupId>
-        <artifactId>ejb-remote</artifactId>
-        <version>7.4.0.GA</version>
-        <relativePath>../pom.xml</relativePath>
+        <artifactId>ejb-remote-to-resteasy</artifactId>
+        <version>quarkus</version>
     </parent>
-    <artifactId>ejb-remote-server-side</artifactId>
-    <packaging>ejb</packaging>
-    <name>Quickstart: ejb-remote - server-side</name>
-    <description>This project demonstrates how to access an EJB from a remote client; this is the server side POM file</description>
+
+    <groupId>org.jboss.eap.quickstarts</groupId>
+    <artifactId>ejb-remote-to-resteasy-server-side</artifactId>
+    <version>quarkus</version>
+    <name>Quickstart: ejb-remote-to-resteasy - server-side</name>
+    <description>This project demonstrates how to migrate an application that accesses an EJB from a remote client, to RESTEasy; this is the server side POM file</description>
 
     <licenses>
         <license>
@@ -37,46 +38,39 @@
     </licenses>
 
     <dependencies>
-
-        <!-- Import the Common Annotations API (JSR-250), we use provided scope
-            as the API is included in JBoss EAP -->
         <dependency>
-            <groupId>org.jboss.spec.javax.annotation</groupId>
-            <artifactId>jboss-annotations-api_1.3_spec</artifactId>
-            <scope>provided</scope>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy-reactive</artifactId>
         </dependency>
-
-        <!-- Import the EJB API, we use provided scope as the API is included in JBoss EAP -->
-        <dependency>
-            <groupId>org.jboss.spec.javax.ejb</groupId>
-            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
         <plugins>
-            <!-- WildFly plug-in to deploy the application -->
             <plugin>
-                <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-maven-plugin</artifactId>
-                <configuration>
-                    <skip>false</skip>
-                    <filename>${project.build.finalName}.jar</filename>
-                </configuration>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler-plugin.version}</version>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-ejb-plugin</artifactId>
+                <groupId>io.quarkus.platform</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire-plugin.version}</version>
                 <configuration>
-                    <ejbVersion>3.2</ejbVersion>
-                    <!-- this is false by default -->
-                    <generateClient>true</generateClient>
+                <systemPropertyVariables>
+                    <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                </systemPropertyVariables>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
-
 </project>

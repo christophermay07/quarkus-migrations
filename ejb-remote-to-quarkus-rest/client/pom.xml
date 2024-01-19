@@ -17,86 +17,52 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>org.jboss.eap.quickstarts</groupId>
-        <artifactId>ejb-remote</artifactId>
-        <version>7.4.0.GA</version>
-        <relativePath>../pom.xml</relativePath>
+        <artifactId>ejb-remote-to-resteasy</artifactId>
+        <version>quarkus</version>
     </parent>
-    <artifactId>ejb-remote-client</artifactId>
-    <packaging>jar</packaging>
-    <name>Quickstart: ejb-remote - client</name>
-    <description>This project demonstrates how to access an EJB from a remote client; this is the client POM file</description>
 
-    <properties>
-        <http>false</http>
-    </properties>
+    <groupId>org.jboss.eap.quickstarts</groupId>
+    <artifactId>ejb-remote-to-resteasy-client</artifactId>
+    <version>quarkus</version>
+    <name>Quickstart: ejb-remote-to-resteasy - client</name>
+    <description>This project demonstrates how to migrate an application that accesses an EJB from a remote client, to RESTEasy; this is the client POM file</description>
 
     <dependencies>
-        <!-- The EJB Client BOM provides application server-compatible dependency management,
-        used for building, testing or debugging EJB client applications. Import the BOM to the
-        dependency management section of the app's pom.xml file and then set dependencies on specific artifacts.
-        Alternatively, as shown in the following example, set a single dependency on the BOM for the app to depend
-        on all the artifacts it manages.
-        -->
         <dependency>
-            <groupId>org.jboss.eap</groupId>
-            <artifactId>wildfly-ejb-client-bom</artifactId>
-            <type>pom</type>
-            <scope>compile</scope>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-rest-client-reactive</artifactId>
         </dependency>
-
-        <!-- We depend on the EJB remote business interfaces of this application -->
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>ejb-remote-server-side</artifactId>
-            <version>${project.version}</version>
-            <type>ejb-client</type>
-        </dependency>
-
     </dependencies>
 
     <build>
         <plugins>
-
-            <!-- Add the maven exec plug-in to allow us to run a java program
-                via maven -->
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <configuration>
-                    <executable>java</executable>
-                    <workingDirectory>${project.build.directory}/exec-working-directory</workingDirectory>
-                    <arguments>
-                        <argument>-Dhttp=${http}</argument>
-                        <argument>-classpath</argument>
-                        <classpath />
-                        <argument>org.jboss.as.quickstarts.ejb.remote.client.RemoteEJBClient</argument>
-                    </arguments>
-                    <!--<detail>true</detail>-->
-                </configuration>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler-plugin.version}</version>
             </plugin>
-            <!-- build standalone exe jar -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <groupId>io.quarkus.platform</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire-plugin.version}</version>
                 <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>org.jboss.as.quickstarts.ejb.remote.client.RemoteEJBClient</mainClass>
-                        </manifest>
-                        <manifestEntries>
-                            <Multi-Release>true</Multi-Release>
-                        </manifestEntries>
-                    </archive>
+                <systemPropertyVariables>
+                    <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>
-
     </build>
-
 </project>
