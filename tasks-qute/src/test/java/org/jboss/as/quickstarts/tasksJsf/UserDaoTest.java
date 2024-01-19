@@ -32,7 +32,7 @@ import io.quarkus.test.junit.QuarkusTest;
  * @author Oliver Kiss
  */
 @QuarkusTest
-public class UserDaoIT {
+public class UserDaoTest {
 
     @Inject
     private UserDao userDao;

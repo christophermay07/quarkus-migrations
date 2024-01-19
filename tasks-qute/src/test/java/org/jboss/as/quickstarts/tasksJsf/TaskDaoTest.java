@@ -38,7 +38,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 // WARNING: Should write independent and isolated tests
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class TaskDaoIT {
+public class TaskDaoTest {
 
     @Inject
     private EntityManager em;

@@ -16,41 +16,36 @@
  */
 package org.jboss.as.quickstarts.tasksJsf;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.junit.jupiter.api.Test;
+
 import io.quarkus.test.junit.QuarkusTest;
 
+/**
+ * @author Lukas Fryc
+ */
 @QuarkusTest
-public class TaskListBeanIT {
+public class ResourcesTest {
 
     public static final String WEBAPP_SRC = "src/main/webapp";
 
     @Inject
-    private TaskDao taskDaoStub;
-
-    @Inject
-    private TaskList taskList;
+    private Instance<Logger> loggerInstance;
 
     @Test
-    public void dao_method_getAll_should_be_called_only_once_on() {
-        taskList.getAll();
-        taskList.getAll();
-        taskList.getAll();
-        assertEquals(1, ((TaskDaoStub) taskDaoStub).getGetAllCallsCount());
+    public void logger_should_be_provided_and_be_able_to_log_information_message() {
+        Logger logger = loggerInstance.get();
+        assertNotNull(logger);
+        assertTrue(logger instanceof Logger);
+        logger.log(Level.INFO, "test message");
     }
 
-    @Test
-    public void dao_method_getAll_should_be_called_after_invalidation() {
-        taskList.getAll();
-        taskList.getAll();
-        assertEquals(1, ((TaskDaoStub) taskDaoStub).getGetAllCallsCount());
-        taskList.invalidate();
-        assertEquals(1, ((TaskDaoStub) taskDaoStub).getGetAllCallsCount());
-        taskList.getAll();
-        taskList.getAll();
-        assertEquals(2, ((TaskDaoStub) taskDaoStub).getGetAllCallsCount());
-    }
 }
