@@ -16,23 +16,27 @@
  */
 package org.jboss.as.quickstarts.ejb.remote.stateless;
 
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.QueryParam;
 
 /**
  * @author Jaikiran Pai
  */
-@Stateless
-@Remote(RemoteCalculator.class)
-public class CalculatorBean implements RemoteCalculator {
+@Path("/calculator")
+@ApplicationScoped
+public class CalculatorBean {
 
-    @Override
-    public int add(int a, int b) {
+    @GET
+    @Path("/add")
+    public int add(@QueryParam("a") int a, @QueryParam("b") int b) {
         return a + b;
     }
 
-    @Override
-    public int subtract(int a, int b) {
+    @GET
+    @Path("/subtract")
+    public int subtract(@QueryParam("a") int a, @QueryParam("b") int b) {
         return a - b;
     }
 }

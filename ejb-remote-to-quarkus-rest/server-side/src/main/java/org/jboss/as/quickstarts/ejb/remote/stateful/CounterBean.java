@@ -16,30 +16,33 @@
  */
 package org.jboss.as.quickstarts.ejb.remote.stateful;
 
-import javax.ejb.Remote;
-import javax.ejb.Stateful;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 
 /**
  * @author Jaikiran Pai
  */
-@Stateful
-@Remote(RemoteCounter.class)
-public class CounterBean implements RemoteCounter {
+@Path("/counter")
+public class CounterBean {
 
-    private int count = 0;
+    @Inject
+    Count count;
 
-    @Override
+    @GET
+    @Path("/increment")
     public void increment() {
-        this.count++;
+        count.increment();
     }
 
-    @Override
+    @GET
+    @Path("/decrement")
     public void decrement() {
-        this.count--;
+        count.decrement();
     }
 
-    @Override
+    @GET
     public int getCount() {
-        return this.count;
+        return count.getCount();
     }
 }
