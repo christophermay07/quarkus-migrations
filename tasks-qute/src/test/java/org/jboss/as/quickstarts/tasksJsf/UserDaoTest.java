@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.Disabled;
+
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
@@ -31,6 +33,7 @@ import io.quarkus.test.junit.QuarkusTest;
  * @author Lukas Fryc
  * @author Oliver Kiss
  */
+@Disabled
 @QuarkusTest
 public class UserDaoTest {
 

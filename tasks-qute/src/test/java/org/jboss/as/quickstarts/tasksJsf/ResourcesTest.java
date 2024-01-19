@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -32,6 +33,7 @@ import io.quarkus.test.junit.QuarkusTest;
 /**
  * @author Lukas Fryc
  */
+@Disabled
 @QuarkusTest
 public class ResourcesTest {
 

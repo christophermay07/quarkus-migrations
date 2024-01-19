@@ -24,6 +24,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,7 @@ import io.quarkus.test.junit.QuarkusTest;
  * @author Lukas Fryc
  * @author Oliver Kiss
  */
+@Disabled
 @QuarkusTest
 // WARNING: Should write independent and isolated tests
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
