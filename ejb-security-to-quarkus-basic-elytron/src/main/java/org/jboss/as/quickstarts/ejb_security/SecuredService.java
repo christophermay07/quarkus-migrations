@@ -18,8 +18,9 @@ package org.jboss.as.quickstarts.ejb_security;
 
 import java.security.Principal;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.annotation.security.RolesAllowed;
-
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -41,6 +42,9 @@ import jakarta.ws.rs.core.MediaType;
 @RolesAllowed({ "guest" })
 public class SecuredService {
 
+    @Inject
+    SecurityIdentity identity;
+
     /**
      * Secured EJB method using security annotations
      */
@@ -48,9 +52,8 @@ public class SecuredService {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/securityInfo")
     public String getSecurityInfo() {
-        // Session context injected using the resource annotation
-        Principal principal = ctx.getCallerPrincipal();
-        return principal.toString();
+        Principal principal = identity.getPrincipal();
+        return principal.getName();
     }
 
     @GET
