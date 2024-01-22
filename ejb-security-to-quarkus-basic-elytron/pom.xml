@@ -58,11 +58,6 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-reactive</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.annotation</groupId>
-            <artifactId>jboss-annotations-api_1.3_spec</artifactId>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <build>
