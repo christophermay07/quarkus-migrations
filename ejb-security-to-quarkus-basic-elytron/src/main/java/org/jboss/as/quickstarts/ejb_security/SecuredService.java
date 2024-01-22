@@ -41,7 +41,7 @@ import jakarta.ws.rs.core.MediaType;
 @Path("/")
 @RolesAllowed({ "guest" })
 @SecurityDomain("other")
-public class SecuredService implements SecuredEJBRemote {
+public class SecuredService {
 
     /**
      * Secured EJB method using security annotations
