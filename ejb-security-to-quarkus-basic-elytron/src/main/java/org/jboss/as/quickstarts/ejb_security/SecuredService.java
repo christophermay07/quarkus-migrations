@@ -19,7 +19,6 @@ package org.jboss.as.quickstarts.ejb_security;
 import java.security.Principal;
 
 import jakarta.annotation.security.RolesAllowed;
-import org.jboss.ejb3.annotation.SecurityDomain;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -40,7 +39,6 @@ import jakarta.ws.rs.core.MediaType;
  */
 @Path("/")
 @RolesAllowed({ "guest" })
-@SecurityDomain("other")
 public class SecuredService {
 
     /**
