@@ -17,13 +17,13 @@
 package org.jboss.as.quickstarts.bmt;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Status;
-import javax.transaction.UserTransaction;
+import jakarta.inject.Inject;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Status;
+import jakarta.transaction.UserTransaction;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 /**
  * A session bean for updating a database table within a JTA transaction
