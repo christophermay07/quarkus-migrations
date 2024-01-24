@@ -67,7 +67,7 @@ public class UnManagedComponent {
             entityManager.joinTransaction();
 
             // make some transactional changes
-            String result = updateKeyValueDatabase(entityManager, key, value);
+            String result = updateKeyValueDatabaseLogic(entityManager, key, value);
 
             /*
              * Note that the default scope of entities managed by the EM is transaction. Thus once the transaction commits the
@@ -118,7 +118,7 @@ public class UnManagedComponent {
      * @param value if key exists then associate value with it, otherwise create a new pair
      * @return the new value of the key value pair or all pairs if key was null (or zero length).
      */
-    public String updateKeyValueDatabase(EntityManager entityManager, String key, String value) {
+    public String updateKeyValueDatabaseLogic(EntityManager entityManager, String key, String value) {
         StringBuilder sb = new StringBuilder();
 
         if (key == null || key.length() == 0) {

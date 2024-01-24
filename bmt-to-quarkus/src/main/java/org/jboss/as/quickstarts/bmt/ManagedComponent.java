@@ -77,7 +77,7 @@ public class ManagedComponent {
              * there is no need to tell the EM about the transaction. Compare this with the UnManagedComponent class where the
              * developer is managing the EM himself and therefore must explicitly tell the EM to join the transaction
              */
-            String result = helper.updateKeyValueDatabase(entityManager, key, value);
+            String result = helper.updateKeyValueDatabaseLogic(entityManager, key, value);
 
             userTransaction.commit();
 
