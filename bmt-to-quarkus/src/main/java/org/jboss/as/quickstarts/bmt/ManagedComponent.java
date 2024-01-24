@@ -16,7 +16,7 @@
  */
 package org.jboss.as.quickstarts.bmt;
 
-import javax.ejb.Stateless;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Status;
@@ -36,7 +36,7 @@ import jakarta.persistence.EntityManager;
  * for injection into other components (eg the {@linkplain TransactionServlet}): - it becomes eligible for other components to
  * be injected; - it becomes eligible for Container Managed Transactions (although this example does not use CMT)
  */
-@Stateless
+@ApplicationScoped
 @TransactionManagement(TransactionManagementType.BEAN)
 // tell the container not to manage transactions
 public class ManagedComponent {

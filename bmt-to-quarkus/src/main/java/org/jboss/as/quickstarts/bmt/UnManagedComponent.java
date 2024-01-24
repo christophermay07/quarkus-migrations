@@ -16,6 +16,7 @@
  */
 package org.jboss.as.quickstarts.bmt;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -32,6 +33,7 @@ import java.util.List;
  *
  * @author Mike Musgrove
  */
+@ApplicationScoped
 public class UnManagedComponent {
     /*
      * Inject an entity manager factory. The reason we do not inject an entity manager (as we do in ManagedComponent) is that
