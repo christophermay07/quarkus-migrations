@@ -20,6 +20,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import io.quarkus.hibernate.orm.PersistenceUnit;
+import io.quarkus.logging.Log;
 import io.quarkus.narayana.jta.QuarkusTransaction;
 
 import java.util.List;
@@ -43,6 +44,7 @@ public class UnManagedComponent {
 
     public String updateKeyValueDatabase(String key, String value) {
         try {
+            Log.info("Beginning user-managed transaction");
             QuarkusTransaction.begin();
 
             // make some transactional changes

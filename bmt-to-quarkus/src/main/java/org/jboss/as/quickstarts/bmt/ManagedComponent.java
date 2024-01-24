@@ -16,6 +16,7 @@
  */
 package org.jboss.as.quickstarts.bmt;
 
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -56,6 +57,7 @@ public class ManagedComponent {
          * method call
          */
         try {
+            Log.info("Beginning container-managed transaction");
             /*
              * Since the bean is managed by the container the Entity Manager (EM) and JTA transaction manager (TM) cooperate so
              * there is no need to tell the EM about the transaction. Compare this with the UnManagedComponent class where the
