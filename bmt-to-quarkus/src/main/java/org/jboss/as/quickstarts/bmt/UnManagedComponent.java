@@ -19,11 +19,8 @@ package org.jboss.as.quickstarts.bmt;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.PersistenceUnit;
-import jakarta.transaction.RollbackException;
-import jakarta.transaction.Status;
-import jakarta.transaction.UserTransaction;
+import io.quarkus.hibernate.orm.PersistenceUnit;
+import io.quarkus.narayana.jta.QuarkusTransaction;
 
 import java.util.List;
 
@@ -38,51 +35,29 @@ import org.jboss.as.quickstarts.bmt.model.KVPair;
 @ApplicationScoped
 public class UnManagedComponent {
     /*
-     * Inject an entity manager factory. The reason we do not inject an entity manager (as we do in ManagedComponent) is that
-     * the factory is thread safe whereas the entity manager is not.
-     *
-     * Specify a persistence unit name (perhaps the application may want to interact with multiple databases).
-     */
-    @PersistenceUnit(unitName = "primary")
-    private EntityManagerFactory entityManagerFactory;
-
-    /*
      * Inject a UserTransaction for manual transaction demarcation (this object is thread safe)
      */
     @Inject
-    private UserTransaction userTransaction;
+    @PersistenceUnit("primary")
+    private EntityManager entityManager;
 
     public String updateKeyValueDatabase(String key, String value) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
         try {
-            userTransaction.begin();
-
-            /*
-             * Since the Entity Manager (EM) is not managed by the container the developer must explicitly tell the EM to join
-             * the transaction. Compare this with ManagedComponent where the container automatically enlists the EM with the
-             * transaction. The persistence context managed by the EM will then be scoped to the JTA transaction which means
-             * that all entities will be detached when the transaction commits.
-             */
-            entityManager.joinTransaction();
+            QuarkusTransaction.begin();
 
             // make some transactional changes
-            String result = updateKeyValueDatabaseLogic(entityManager, key, value);
+            String result = updateKeyValueDatabaseLogic(key, value);
 
             /*
              * Note that the default scope of entities managed by the EM is transaction. Thus once the transaction commits the
              * entity will be detached from the EM. See also the comment in the finally block below.
              */
-            userTransaction.commit();
+            QuarkusTransaction.commit();
 
             return result;
-        } catch (RollbackException e) {
-            // We tried to commit the transaction but it has already been rolled back (adding duplicate keys would
-            // generate this condition although the example does check for duplicates).
-            Throwable t = e.getCause();
-
-            return t != null ? t.getMessage() : e.getMessage();
         } catch (Exception e) {
+            QuarkusTransaction.rollback();
+
             /*
              * An application cannot handle any of the other exceptions raised by begin and commit so we just catch the generic
              * exception. The meaning of the other exceptions is:
@@ -94,31 +69,17 @@ public class UnManagedComponent {
              * ourselves)
              */
             return e.getMessage();
-        } finally {
-            /*
-             * Since the EM is transaction scoped it will not detach its objects even when calling close on it until the
-             * transaction completes. Therefore we must roll back any active transaction before returning.
-             */
-            try {
-                if (userTransaction.getStatus() == Status.STATUS_ACTIVE)
-                    userTransaction.rollback();
-            } catch (Throwable e) {
-                // ignore
-            }
-
-            entityManager.close();
         }
     }
 
     /**
      * Utility method for updating a key value database.
      *
-     * @param entityManager an open JPA entity manager
      * @param key if null or zero length then list all pairs
      * @param value if key exists then associate value with it, otherwise create a new pair
      * @return the new value of the key value pair or all pairs if key was null (or zero length).
      */
-    public String updateKeyValueDatabaseLogic(EntityManager entityManager, String key, String value) {
+    public String updateKeyValueDatabaseLogic(String key, String value) {
         StringBuilder sb = new StringBuilder();
 
         if (key == null || key.length() == 0) {

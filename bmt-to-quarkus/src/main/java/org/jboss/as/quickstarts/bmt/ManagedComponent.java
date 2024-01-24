@@ -18,10 +18,7 @@ package org.jboss.as.quickstarts.bmt;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Status;
-import jakarta.transaction.UserTransaction;
-import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 /**
  * A session bean for updating a database table within a JTA transaction
@@ -36,18 +33,6 @@ import jakarta.persistence.EntityManager;
  */
 @ApplicationScoped
 public class ManagedComponent {
-    /**
-     * Ask the container to inject an Entity Manager (EM). As a consequence the EM will be automatically enlisted into any new
-     * transactions started by the managed component.
-     *
-     */
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    // Inject a UserTransaction for manual transaction demarcation.
-    @Inject
-    private UserTransaction userTransaction;
-
     // Inject a utility class for updating JPA entities
     @Inject
     private UnManagedComponent helper;
@@ -63,6 +48,7 @@ public class ManagedComponent {
      * @return a string representing the keys values pairs if no key is provided, or the key value pair if one is provided, or
      *         the error if anything went wrong
      */
+    @Transactional
     public String updateKeyValueDatabase(String key, String value) {
         /*
          * Since this is a session bean method we are guaranteed to be thread safe so it is OK to use the injected Entity
@@ -70,30 +56,14 @@ public class ManagedComponent {
          * method call
          */
         try {
-            userTransaction.begin();
-
             /*
              * Since the bean is managed by the container the Entity Manager (EM) and JTA transaction manager (TM) cooperate so
              * there is no need to tell the EM about the transaction. Compare this with the UnManagedComponent class where the
              * developer is managing the EM himself and therefore must explicitly tell the EM to join the transaction
              */
-            String result = helper.updateKeyValueDatabaseLogic(entityManager, key, value);
-
-            userTransaction.commit();
-
-            return result;
+            return helper.updateKeyValueDatabaseLogic(key, value);
         } catch (Exception e) {
             return e.getMessage();
-        } finally {
-            /*
-             * Clean up
-             */
-            try {
-                if (userTransaction.getStatus() == Status.STATUS_ACTIVE)
-                    userTransaction.rollback();
-            } catch (Throwable e) {
-                // ignore
-            }
         }
     }
 }
