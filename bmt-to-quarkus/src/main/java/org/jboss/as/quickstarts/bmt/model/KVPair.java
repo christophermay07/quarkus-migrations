@@ -36,36 +36,36 @@ public class KVPair implements Serializable {
 
     @Id
     @Column(unique = true)
-    private String key;
+    private String bmtKey;
 
     @Column
-    private String value;
+    private String bmtValue;
 
     public KVPair() {
     }
 
-    public KVPair(String key, String value) {
-        setKey(key);
-        setValue(value);
+    public KVPair(String bmtKey, String bmtValue) {
+        setBmtKey(bmtKey);
+        setBmtValue(bmtValue);
     }
 
-    public String getKey() {
-        return key;
+    public String getBmtKey() {
+        return bmtKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setBmtKey(String bmtKey) {
+        this.bmtKey = bmtKey;
     }
 
-    public String getValue() {
-        return value;
+    public String getBmtValue() {
+        return bmtValue;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setBmtValue(String bmtValue) {
+        this.bmtValue = bmtValue;
     }
 
     public String toString() {
-        return key + "=" + value;
+        return bmtKey + "=" + bmtValue;
     }
 }

@@ -127,7 +127,7 @@ public class UnManagedComponent {
             final List<KVPair> list = entityManager.createQuery("select k from KVPair k").getResultList();
 
             for (KVPair kvPair : list)
-                sb.append(kvPair.getKey()).append("=").append(kvPair.getValue()).append(',');
+                sb.append(kvPair.getBmtKey()).append("=").append(kvPair.getBmtValue()).append(',');
 
         } else {
             KVPair kvPair;
@@ -146,12 +146,12 @@ public class UnManagedComponent {
                     entityManager.persist(kvPair);
                 } else {
                     // update an existing row in the key/value table
-                    kvPair.setValue(value);
+                    kvPair.setBmtValue(value);
                     entityManager.persist(kvPair);
                 }
             }
 
-            sb.append(kvPair.getKey()).append("=").append(kvPair.getValue());
+            sb.append(kvPair.getBmtKey()).append("=").append(kvPair.getBmtValue());
         }
 
         return sb.toString();
