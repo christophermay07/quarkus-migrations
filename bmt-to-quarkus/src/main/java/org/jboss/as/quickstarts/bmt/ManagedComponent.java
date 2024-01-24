@@ -21,8 +21,6 @@ import jakarta.inject.Inject;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Status;
 import jakarta.transaction.UserTransaction;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
 import jakarta.persistence.EntityManager;
 
 /**
@@ -37,8 +35,6 @@ import jakarta.persistence.EntityManager;
  * be injected; - it becomes eligible for Container Managed Transactions (although this example does not use CMT)
  */
 @ApplicationScoped
-@TransactionManagement(TransactionManagementType.BEAN)
-// tell the container not to manage transactions
 public class ManagedComponent {
     /**
      * Ask the container to inject an Entity Manager (EM). As a consequence the EM will be automatically enlisted into any new
