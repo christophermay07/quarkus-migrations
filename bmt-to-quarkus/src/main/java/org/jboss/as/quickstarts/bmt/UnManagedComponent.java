@@ -27,6 +27,8 @@ import jakarta.transaction.UserTransaction;
 
 import java.util.List;
 
+import org.jboss.as.quickstarts.bmt.model.KVPair;
+
 /**
  * A class for updating a database table within a JTA transaction. Since the class is only a simple CDI bean the developer is
  * responsible for both controlling the life cycle of the Entity Manager and for transaction demarcation.
