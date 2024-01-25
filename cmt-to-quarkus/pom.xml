@@ -17,20 +17,13 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.jboss.eap.quickstarts</groupId>
-        <artifactId>quickstart-parent</artifactId>
-        <!--
-        Maintain separation between the artifact id and the version to help prevent
-        merge conflicts between commits changing the GA and those changing the V.
-        -->
-        <version>7.4.0.GA</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
+
+    <groupId>org.jboss.eap.quickstarts</groupId>
     <artifactId>cmt</artifactId>
-    <packaging>war</packaging>
-    <name>Quickstart: cmt</name>
-    <description>This project demonstrates how to use transactions managed by the container</description>
+    <version>quarkus</version>
+    <packaging>jar</packaging>
+    <name>Quickstart: cmt-to-quarkus</name>
+    <description>This project demonstrates how to migrate an app using container-managed transactions to Quarkus</description>
 
     <licenses>
         <license>
@@ -39,6 +32,26 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <properties>
+        <maven.compiler.release>11</maven.compiler.release>
+        <quarkus.platform.version>3.6.6</quarkus.platform.version>
+        <compiler-plugin.version>3.11.0</compiler-plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.quarkus.platform</groupId>
+                <artifactId>quarkus-bom</artifactId>
+                <version>${quarkus.platform.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Import the injection annotations -->
@@ -89,7 +102,26 @@
             <artifactId>jboss-annotations-api_1.3_spec</artifactId>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>io.quarkus.platform</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
