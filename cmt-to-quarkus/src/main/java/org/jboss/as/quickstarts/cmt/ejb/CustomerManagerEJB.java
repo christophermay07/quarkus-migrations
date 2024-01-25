@@ -19,7 +19,6 @@ package org.jboss.as.quickstarts.cmt.ejb;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import javax.ejb.EJBException;
 import jakarta.inject.Inject;
 import javax.naming.NamingException;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -61,7 +60,7 @@ public class CustomerManagerEJB {
         // the invoice is not delivered when we cause an EJBException
         // after the fact but before the transaction is committed.
         if (!nameIsValid(name)) {
-            throw new EJBException("Invalid name: customer names should only contain letters & '-'");
+            throw new IllegalArgumentException("Invalid name: customer names should only contain letters & '-'");
         }
     }
 
