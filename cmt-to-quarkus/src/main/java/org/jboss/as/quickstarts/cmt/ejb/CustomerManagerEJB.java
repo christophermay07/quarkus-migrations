@@ -20,8 +20,6 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import javax.ejb.EJBException;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import javax.naming.NamingException;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -32,6 +30,8 @@ import jakarta.transaction.HeuristicRollbackException;
 import jakarta.transaction.NotSupportedException;
 import jakarta.transaction.RollbackException;
 import jakarta.transaction.SystemException;
+import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
 
 import org.jboss.as.quickstarts.cmt.model.Customer;
 
@@ -47,7 +47,7 @@ public class CustomerManagerEJB {
     @Inject
     private InvoiceManagerEJB invoiceManager;
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @Transactional(TxType.REQUIRED)
     public void createCustomer(String name) throws RemoteException {
         logMessageManager.logCreateCustomer(name);
 
@@ -82,7 +82,7 @@ public class CustomerManagerEJB {
      * @throws HeuristicMixedException
      * @throws HeuristicRollbackException
      */
-    @TransactionAttribute(TransactionAttributeType.NEVER)
+    @Transactional(TxType.NEVER)
     @SuppressWarnings("unchecked")
     public List<Customer> listCustomers() {
         return entityManager.createQuery("select c from Customer c").getResultList();

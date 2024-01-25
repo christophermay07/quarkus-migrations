@@ -19,8 +19,6 @@ package org.jboss.as.quickstarts.cmt.ejb;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.naming.NamingException;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -31,22 +29,25 @@ import jakarta.transaction.HeuristicRollbackException;
 import jakarta.transaction.NotSupportedException;
 import jakarta.transaction.RollbackException;
 import jakarta.transaction.SystemException;
+import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
 
 import org.jboss.as.quickstarts.cmt.model.LogMessage;
 
 @ApplicationScoped
+@Transactional
 public class LogMessageManagerEJB {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @Transactional(TxType.REQUIRES_NEW)
     public void logCreateCustomer(String name) throws RemoteException {
         LogMessage lm = new LogMessage();
         lm.setMessage("Attempt to create record for customer: '" + name + "'");
         entityManager.persist(lm);
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @Transactional(TxType.REQUIRED)
     public void blaMethod() throws RemoteException {
         logCreateCustomer("Niks");
     }
@@ -64,7 +65,7 @@ public class LogMessageManagerEJB {
      * @throws HeuristicMixedException
      * @throws HeuristicRollbackException
      */
-    @TransactionAttribute(TransactionAttributeType.NEVER)
+    @Transactional(TxType.NEVER)
     @SuppressWarnings("unchecked")
     public List<LogMessage> listLogMessages() {
         return entityManager.createQuery("select lm from LogMessage lm").getResultList();
