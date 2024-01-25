@@ -67,11 +67,9 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Import the JPA API, we use provided scope as the API is included in JBoss EAP -->
         <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <scope>provided</scope>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-orm</artifactId>
         </dependency>
         <!-- Import the EJB API, we use provided scope as the API is included in JBoss EAP -->
         <dependency>
