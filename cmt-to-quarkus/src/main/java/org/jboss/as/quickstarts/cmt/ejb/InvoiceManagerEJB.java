@@ -17,15 +17,17 @@
 package org.jboss.as.quickstarts.cmt.ejb;
 
 import jakarta.annotation.Resource;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import jakarta.enterprise.context.ApplicationScoped;
+
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
+
 import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSContext;
 import javax.jms.Queue;
 
-@Stateless
+@ApplicationScoped
 public class InvoiceManagerEJB {
 
     @Inject
@@ -35,7 +37,7 @@ public class InvoiceManagerEJB {
     @Resource(lookup = "java:/queue/CMTQueue")
     private Queue queue;
 
-    @TransactionAttribute(TransactionAttributeType.MANDATORY)
+    @Transactional(TxType.MANDATORY)
     public void createInvoice(String name) {
         jmsContext.createProducer()
                 .send(queue, "Created invoice for customer named: " + name);

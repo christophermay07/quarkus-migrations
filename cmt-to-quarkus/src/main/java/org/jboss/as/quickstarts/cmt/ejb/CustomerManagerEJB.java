@@ -20,12 +20,12 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import javax.ejb.EJBException;
-import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import javax.jms.JMSException;
 import javax.naming.NamingException;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.HeuristicMixedException;
@@ -36,7 +36,7 @@ import jakarta.transaction.SystemException;
 
 import org.jboss.as.quickstarts.cmt.model.Customer;
 
-@Stateless
+@ApplicationScoped
 public class CustomerManagerEJB {
 
     @PersistenceContext

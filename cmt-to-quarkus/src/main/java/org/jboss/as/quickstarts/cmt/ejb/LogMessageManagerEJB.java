@@ -19,11 +19,12 @@ package org.jboss.as.quickstarts.cmt.ejb;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.jms.JMSException;
 import javax.naming.NamingException;
+
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.HeuristicMixedException;
@@ -34,7 +35,7 @@ import jakarta.transaction.SystemException;
 
 import org.jboss.as.quickstarts.cmt.model.LogMessage;
 
-@Stateless
+@ApplicationScoped
 public class LogMessageManagerEJB {
     @PersistenceContext
     private EntityManager entityManager;
