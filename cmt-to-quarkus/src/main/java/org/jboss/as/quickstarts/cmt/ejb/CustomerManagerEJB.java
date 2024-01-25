@@ -23,7 +23,6 @@ import javax.ejb.EJBException;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
-import javax.jms.JMSException;
 import javax.naming.NamingException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
@@ -49,7 +48,7 @@ public class CustomerManagerEJB {
     private InvoiceManagerEJB invoiceManager;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void createCustomer(String name) throws RemoteException, JMSException {
+    public void createCustomer(String name) throws RemoteException {
         logMessageManager.logCreateCustomer(name);
 
         Customer c1 = new Customer();

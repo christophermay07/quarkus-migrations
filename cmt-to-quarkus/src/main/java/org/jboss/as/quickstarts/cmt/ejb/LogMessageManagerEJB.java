@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.jms.JMSException;
 import javax.naming.NamingException;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -41,14 +40,14 @@ public class LogMessageManagerEJB {
     private EntityManager entityManager;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void logCreateCustomer(String name) throws RemoteException, JMSException {
+    public void logCreateCustomer(String name) throws RemoteException {
         LogMessage lm = new LogMessage();
         lm.setMessage("Attempt to create record for customer: '" + name + "'");
         entityManager.persist(lm);
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void blaMethod() throws RemoteException, JMSException {
+    public void blaMethod() throws RemoteException {
         logCreateCustomer("Niks");
     }
 
