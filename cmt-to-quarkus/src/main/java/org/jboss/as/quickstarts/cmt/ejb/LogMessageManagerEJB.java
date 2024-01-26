@@ -16,54 +16,42 @@
  */
 package org.jboss.as.quickstarts.cmt.ejb;
 
-import java.rmi.RemoteException;
 import java.util.List;
-
-import javax.naming.NamingException;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.HeuristicMixedException;
-import jakarta.transaction.HeuristicRollbackException;
-import jakarta.transaction.NotSupportedException;
 import jakarta.transaction.RollbackException;
-import jakarta.transaction.SystemException;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
 
 import org.jboss.as.quickstarts.cmt.model.LogMessage;
 
 @ApplicationScoped
-@Transactional
 public class LogMessageManagerEJB {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional(TxType.REQUIRES_NEW)
-    public void logCreateCustomer(String name) throws RemoteException {
+    /**
+     * Logs the customer name that a record is intended to be created for.
+     *
+     * @param name
+     *     The name to log a record for.
+     * @throws RollbackException
+     *     When a log message for the passed-in name already exists.
+     */
+    @Transactional(value = TxType.REQUIRES_NEW)
+    public void logCreateCustomer(String name) throws RollbackException {
         LogMessage lm = new LogMessage();
         lm.setMessage("Attempt to create record for customer: '" + name + "'");
-        entityManager.persist(lm);
-    }
 
-    @Transactional(TxType.REQUIRED)
-    public void blaMethod() throws RemoteException {
-        logCreateCustomer("Niks");
+        entityManager.persist(lm);
     }
 
     /**
      * List all the log-messages.
      *
      * @return
-     * @throws NamingException
-     * @throws NotSupportedException
-     * @throws SystemException
-     * @throws SecurityException
-     * @throws IllegalStateException
-     * @throws RollbackException
-     * @throws HeuristicMixedException
-     * @throws HeuristicRollbackException
      */
     @Transactional(TxType.NEVER)
     @SuppressWarnings("unchecked")

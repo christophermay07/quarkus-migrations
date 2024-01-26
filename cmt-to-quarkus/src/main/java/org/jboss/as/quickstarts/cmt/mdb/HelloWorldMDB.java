@@ -16,10 +16,9 @@
  */
 package org.jboss.as.quickstarts.cmt.mdb;
 
-import java.util.logging.Logger;
-
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 
 /**
@@ -33,10 +32,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class HelloWorldMDB {
 
-    private static final Logger LOGGER = Logger.getLogger(HelloWorldMDB.class.toString());
-
     @Incoming("CMTQueue")
     public void onMessage(String msg) {
-        LOGGER.info("Received Message: " + msg);
+        Log.info("Received Message: " + msg);
     }
 }

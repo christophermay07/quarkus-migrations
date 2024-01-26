@@ -16,22 +16,18 @@
  */
 package org.jboss.as.quickstarts.cmt.ejb;
 
-import java.rmi.RemoteException;
 import java.util.List;
 
 import jakarta.inject.Inject;
-import javax.naming.NamingException;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.HeuristicMixedException;
-import jakarta.transaction.HeuristicRollbackException;
-import jakarta.transaction.NotSupportedException;
 import jakarta.transaction.RollbackException;
-import jakarta.transaction.SystemException;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.as.quickstarts.cmt.model.Customer;
 
 @ApplicationScoped
@@ -47,8 +43,16 @@ public class CustomerManagerEJB {
     private InvoiceManagerEJB invoiceManager;
 
     @Transactional(TxType.REQUIRED)
-    public void createCustomer(String name) throws RemoteException {
-        logMessageManager.logCreateCustomer(name);
+    public void createCustomer(String name) throws RollbackException, EntityExistsException {
+        try {
+            logMessageManager.logCreateCustomer(name);
+        } catch (RollbackException e) {
+            if (e.getCause() instanceof ConstraintViolationException) {
+                throw new EntityExistsException(e.getCause());
+            } else {
+                throw e;
+            }
+        }
 
         Customer c1 = new Customer();
         c1.setName(name);
@@ -72,14 +76,6 @@ public class CustomerManagerEJB {
      * List all the customers.
      *
      * @return
-     * @throws NamingException
-     * @throws NotSupportedException
-     * @throws SystemException
-     * @throws SecurityException
-     * @throws IllegalStateException
-     * @throws RollbackException
-     * @throws HeuristicMixedException
-     * @throws HeuristicRollbackException
      */
     @Transactional(TxType.NEVER)
     @SuppressWarnings("unchecked")
