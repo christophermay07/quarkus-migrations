@@ -18,7 +18,6 @@ package org.jboss.as.quickstarts.greeter;
 
 import java.util.logging.Logger;
 
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.faces.context.FacesContext;
