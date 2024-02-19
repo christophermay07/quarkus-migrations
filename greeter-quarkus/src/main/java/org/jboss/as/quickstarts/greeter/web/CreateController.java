@@ -16,12 +16,12 @@
  */
 package org.jboss.as.quickstarts.greeter.web;
 
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jboss.as.quickstarts.greeter.domain.User;
 import org.jboss.as.quickstarts.greeter.domain.UserDao;
