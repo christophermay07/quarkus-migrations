@@ -16,19 +16,22 @@
  */
 package org.jboss.quickstarts.ws.jaxws.samples.jsr181pojo;
 
-import javax.jws.WebMethod;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.QueryParam;
 
 /**
  *
  * @author rsearls@redhat.com
  */
-@WebService
-@SOAPBinding(style = SOAPBinding.Style.RPC)
+@ApplicationScoped
+@Path("/jsebean")
 public class JSEBean {
-    @WebMethod
-    public String echo(String input) {
+
+    @GET
+    @Path("/echo")
+    public String echo(@QueryParam("input") String input) {
         return "JSEBean pojo: " + input;
     }
 }
