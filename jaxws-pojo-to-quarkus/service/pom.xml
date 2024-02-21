@@ -21,12 +21,12 @@
     <parent>
         <groupId>org.jboss.eap.quickstarts</groupId>
         <artifactId>jaxws-pojo</artifactId>
-        <version>7.4.0.GA</version>
+        <version>quarkus</version>
     </parent>
     <artifactId>jaxws-pojo-service</artifactId>
-    <packaging>war</packaging>
-    <name>Quickstart: jaxws-pojo - service</name>
-    <description>This project is a working example of a JAX-WS web service endpoint; this is the service POM file</description>
+    <packaging>jar</packaging>
+    <name>Quickstart: jaxws-pojo - service to Quarkus</name>
+    <description>This project demonstrates migration a JAX-WS web service POJO endpoint to Quarkus; this is the service POM file</description>
 
     <licenses>
         <license>
@@ -35,42 +35,43 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
     <dependencies>
         <dependency>
-            <groupId>org.jboss.spec.javax.xml.ws</groupId>
-            <artifactId>jboss-jaxws-api_2.3_spec</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.jws</groupId>
-            <artifactId>jsr181-api</artifactId>
-            <scope>provided</scope>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy-reactive</artifactId>
         </dependency>
     </dependencies>
+
     <build>
-        <!-- Set the name for the deployable archive instead of using the default name with the version -->
         <finalName>${project.artifactId}</finalName>
 
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <attachClasses>true</attachClasses>
-                </configuration>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler-plugin.version}</version>
             </plugin>
-
-            <!-- WildFly Maven plug-in to deploy WAR -->
             <plugin>
-                <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-maven-plugin</artifactId>
+                <groupId>io.quarkus.platform</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire-plugin.version}</version>
                 <configuration>
-                    <skip>false</skip>
+                <systemPropertyVariables>
+                    <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                </systemPropertyVariables>
                 </configuration>
             </plugin>
-
         </plugins>
-        <sourceDirectory>src/main/java</sourceDirectory>
     </build>
 </project>
