@@ -16,23 +16,23 @@
  */
 package org.jboss.quickstarts.ws.jaxws.samples.retail.profile;
 
-import javax.ejb.Stateless;
-import javax.jws.WebService;
-import javax.jws.WebMethod;
-import javax.jws.soap.SOAPBinding;
+import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.model.DiscountRequest;
+import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.model.DiscountResponse;
+
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 
 /**
  *
  * @author rsearls@redhat.com
  */
-@Stateless
-@WebService(
-    name = "ProfileMgmt",
-    targetNamespace = "http://org.jboss.ws/samples/retail/profile",
-    serviceName = "ProfileMgmtService")
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
+@RequestScoped
+@Path("/ProfileMgmtService")
 public class ProfileMgmtBean {
-    @WebMethod
+
+    @POST
+    @Path("/getCustomerDiscount")
     public DiscountResponse getCustomerDiscount(DiscountRequest request) {
         DiscountResponse dResponse = new DiscountResponse();
         dResponse.setCustomer(request.getCustomer());

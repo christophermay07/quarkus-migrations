@@ -4,7 +4,6 @@ public class DiscountResponse {
     private Customer customer;
     private double discount;
 
-    
     public Customer getCustomer() {
         return customer;
     }
