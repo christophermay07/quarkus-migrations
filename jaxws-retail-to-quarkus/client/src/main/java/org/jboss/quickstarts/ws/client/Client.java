@@ -16,29 +16,26 @@
  */
 package org.jboss.quickstarts.ws.client;
 
-import java.net.URL;
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.quickstarts.ws.client.model.Customer;
+import org.jboss.quickstarts.ws.client.model.DiscountRequest;
+import org.jboss.quickstarts.ws.client.model.DiscountResponse;
 
-import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.Customer;
-import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountRequest;
-import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountResponse;
-import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.ProfileMgmt;
+import io.quarkus.runtime.QuarkusApplication;
+import io.quarkus.runtime.annotations.QuarkusMain;
 
 /**
  * @author rsearls@redhat.com
  */
-public class Client {
+@QuarkusMain
+public class Client implements QuarkusApplication {
 
-    public static void main(String[] args) {
-        String endPointAddress = "http://localhost:8080/jaxws-retail/ProfileMgmtService/ProfileMgmt";
-        QName serviceName = new QName("http://org.jboss.ws/samples/retail/profile", "ProfileMgmtService");
+    @RestClient
+    ProfileMgmtClient client;
 
+    @Override
+    public int run(String... args) throws Exception {
         try {
-            URL wsdlURL = new URL(endPointAddress + "?wsdl");
-            Service service = Service.create(wsdlURL, serviceName);
-            ProfileMgmt proxy = service.getPort(ProfileMgmt.class);
-
             Customer customer = new Customer();
             customer.setFirstName("Jay");
             customer.setLastName("Boss");
@@ -46,7 +43,7 @@ public class Client {
             DiscountRequest dRequest = new DiscountRequest();
             dRequest.setCustomer(customer);
 
-            DiscountResponse dResponse = proxy.getCustomerDiscount(dRequest);
+            DiscountResponse dResponse = client.getCustomerDiscount(dRequest);
             Customer responseCustomer = dResponse.getCustomer();
             System.out.format("%s %s\'s discount is %.2f%n", responseCustomer.getFirstName(),
                     responseCustomer.getLastName(), dResponse.getDiscount());
@@ -54,5 +51,7 @@ public class Client {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 }
