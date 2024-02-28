@@ -16,22 +16,21 @@
  */
 package org.jboss.quickstarts.ws.jaxws.samples.jsr181pojo;
 
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.jws.WebMethod;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.QueryParam;
 
 /**
  * @author rsearls@redhat@com
  */
-@Stateless
-@Remote(EJB3RemoteInterface.class)
-@WebService
-@SOAPBinding(style = SOAPBinding.Style.RPC)
-public class EJB3Bean implements EJB3RemoteInterface {
-    @WebMethod
-    public String echo(String input) {
+@ApplicationScoped
+@Path("/ejb3bean")
+public class EJB3Bean {
+
+    @GET
+    @Path("/echo")
+    public String echo(@QueryParam("input") String input) {
         return "EJB3Bean returning: " + input;
     }
 }
