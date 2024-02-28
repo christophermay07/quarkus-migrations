@@ -16,28 +16,28 @@
  */
 package org.jboss.quickstarts.ws.client;
 
-import java.net.URL;
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-import org.jboss.quickstarts.ws.jaxws.samples.jsr181pojo.EJB3RemoteInterface;
+import io.quarkus.runtime.QuarkusApplication;
+import io.quarkus.runtime.annotations.QuarkusMain;
 
 /**
  * @author rsearls@redhat.com
  */
-public class Client {
+@QuarkusMain
+public class Client implements QuarkusApplication {
 
-    public static void main(String[] args) {
-        String endPointAddress = "http://localhost:8080/jaxws-ejb-endpoint/EJB3Bean";
-        QName serviceName = new QName("http://jsr181pojo.samples.jaxws.ws.quickstarts.jboss.org/", "EJB3BeanService");
+    @RestClient
+    Ejb3BeanClient client;
 
+    @Override
+    public int run(String... args) throws Exception {
         try {
-            URL wsdlURL = new URL(endPointAddress + "?wsdl");
-            Service service = Service.create(wsdlURL, serviceName);
-            EJB3RemoteInterface proxy = service.getPort(EJB3RemoteInterface.class);
-            System.out.println(proxy.echo("ejbClient calling"));
+            System.out.println(client.echo("ejbClient calling"));
         } catch (Exception e) {
             System.out.println(e);
         }
+
+        return 0;
     }
 }
